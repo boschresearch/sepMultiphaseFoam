@@ -1,0 +1,648 @@
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Reference solution for a 2D capillary wave", \
+"Title",ExpressionUUID->"4b2254a4-7e57-470f-a589-70ac6092b4d5"],
+
+Cell[CellGroupData[{
+
+Cell["Implement the expressions from the paper", \
+"Section",ExpressionUUID->"4a282041-5868-4521-aad1-637fefe3dae5"],
+
+Cell["\<\
+ From: 
+ Motion of two superposed viscous fluids 
+The Physics of Fluids 24, 1217 (1981); https://doi.org/10.1063/1.863522 \
+\>", "Text",ExpressionUUID->"fbd57ac0-88d4-41c9-9e44-02335b1e711f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"a", "[", "t_", "]"}], ":=", 
+  RowBox[{
+   FractionBox[
+    RowBox[{
+     RowBox[{"u0", " ", "\[Sigma]"}], "-", 
+     RowBox[{
+      SuperscriptBox["\[Omega]0", "2"], "a0"}]}], 
+    RowBox[{"\[Sigma]", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"2", "\[Sigma]"}], "+", 
+       RowBox[{"\[CapitalLambda]", "[", "\[Sigma]", "]"}], "+", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"\[CapitalLambda]", "'"}], "[", "\[Sigma]", "]"}], 
+        "\[Sigma]"}]}], ")"}]}]], 
+   RowBox[{"Exp", "[", 
+    RowBox[{"\[Sigma]", " ", "t"}], "]"}]}]}]], "Input",
+ CellLabel->"",ExpressionUUID->"167f49c3-4b05-4011-b07e-a06d63f2d502"],
+
+Cell[BoxData[
+ RowBox[{"\[Omega]0", "=", 
+  RowBox[{
+   SqrtBox[
+    RowBox[{
+     RowBox[{
+      FractionBox[
+       RowBox[{
+        RowBox[{"\[Rho]", "[", "l", "]"}], "-", 
+        RowBox[{"\[Rho]", "[", "u", "]"}]}], 
+       RowBox[{
+        RowBox[{"\[Rho]", "[", "l", "]"}], "+", 
+        RowBox[{"\[Rho]", "[", "u", "]"}]}]], "g", " ", "k"}], "+", 
+     RowBox[{
+      FractionBox["\[Zeta]", 
+       RowBox[{
+        RowBox[{"\[Rho]", "[", "l", "]"}], "+", 
+        RowBox[{"\[Rho]", "[", "u", "]"}]}]], 
+      SuperscriptBox["k", "3"]}]}]], "/.", 
+   RowBox[{"g", "->", "0"}]}]}]], "Input",
+ CellLabel->"",ExpressionUUID->"f4f3b900-99c1-4fcb-93b3-faeeb146a9af"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"\[Lambda]", "[", 
+   RowBox[{"s_", ",", "p_"}], "]"}], ":=", 
+  SqrtBox[
+   RowBox[{
+    SuperscriptBox["k", "2"], "+", 
+    RowBox[{"s", " ", 
+     RowBox[{
+      RowBox[{"\[Rho]", "[", "p", "]"}], "/", 
+      RowBox[{"\[Mu]", "[", "p", "]"}]}]}]}]]}]], "Input",
+ CellLabel->"",ExpressionUUID->"7f0b6d30-05d9-46aa-99c7-9d65c6160d65"],
+
+Cell[BoxData[
+ RowBox[{"\[Lambda]", "[", 
+  RowBox[{"s", ",", "l"}], "]"}]], "Input",
+ CellLabel->"",ExpressionUUID->"24d70764-89ad-45e8-aa12-f0bb788ec8d1"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"\[CapitalLambda]", "[", "s_", "]"}], "=", 
+  RowBox[{"FullSimplify", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"4", "k", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"-", 
+           RowBox[{"\[Rho]", "[", "l", "]"}]}], 
+          RowBox[{"\[Rho]", "[", "u", "]"}], "s"}], "+", 
+         RowBox[{"k", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"\[Mu]", "[", "u", "]"}], "-", 
+            RowBox[{"\[Mu]", "[", "l", "]"}]}], ")"}], 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"\[Rho]", "[", "u", "]"}], 
+             RowBox[{"(", 
+              RowBox[{"k", "-", 
+               RowBox[{"\[Lambda]", "[", "l", "]"}]}], ")"}]}], "-", 
+            RowBox[{
+             RowBox[{"\[Rho]", "[", "l", "]"}], 
+             RowBox[{"(", 
+              RowBox[{"k", "-", 
+               RowBox[{"\[Lambda]", "[", "u", "]"}]}], ")"}]}]}], ")"}]}], 
+         "+", 
+         RowBox[{
+          SuperscriptBox["k", "2"], 
+          SuperscriptBox[
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"\[Mu]", "[", "l", "]"}], "-", 
+             RowBox[{"\[Mu]", "[", "u", "]"}]}], ")"}], "2"], 
+          RowBox[{"(", 
+           RowBox[{"k", "-", 
+            RowBox[{"\[Lambda]", "[", "l", "]"}]}], ")"}], 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"k", "-", 
+             RowBox[{"\[Lambda]", "[", "u", "]"}]}], ")"}], "/", "s"}]}]}], 
+        ")"}]}], ")"}], "/", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"\[Rho]", "[", "l", "]"}], "+", 
+         RowBox[{"\[Rho]", "[", "u", "]"}]}], ")"}], 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"\[Rho]", "[", "l", "]"}], 
+          RowBox[{"(", 
+           RowBox[{"k", "-", 
+            RowBox[{"\[Lambda]", "[", "u", "]"}]}], ")"}]}], "+", 
+         RowBox[{
+          RowBox[{"\[Rho]", "[", "u", "]"}], 
+          RowBox[{"(", 
+           RowBox[{"k", "-", 
+            RowBox[{"\[Lambda]", "[", "l", "]"}]}], ")"}]}]}], ")"}]}], 
+      ")"}]}], "/.", 
+    RowBox[{
+     RowBox[{"\[Lambda]", "[", "x_", "]"}], "->", 
+     RowBox[{"\[Lambda]", "[", 
+      RowBox[{"s", ",", "x"}], "]"}]}]}], "]"}]}]], "Input",
+ CellLabel->"",ExpressionUUID->"0c8e976d-a876-4eb4-87f6-2d3870ea8875"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Define case parameters", \
+"Section",ExpressionUUID->"addab246-4fc8-4f4d-a0fa-132a96a14574"],
+
+Cell[BoxData[{
+ RowBox[{"waterAir", "=", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Rho]", "[", "l", "]"}], "->", "998.2"}], ",", 
+    RowBox[{
+     RowBox[{"\[Rho]", "[", "u", "]"}], "->", "1.19"}], ",", 
+    RowBox[{
+     RowBox[{"\[Mu]", "[", "l", "]"}], "->", 
+     RowBox[{
+      SuperscriptBox["10", 
+       RowBox[{"-", "6"}]], " ", "998.2"}]}], ",", 
+    RowBox[{
+     RowBox[{"\[Mu]", "[", "u", "]"}], "->", 
+     RowBox[{"1.53", " ", 
+      SuperscriptBox["10", 
+       RowBox[{"-", "5"}]], "1.19"}]}], ",", 
+    RowBox[{"\[Zeta]", "->", 
+     RowBox[{"72.74", " ", 
+      SuperscriptBox["10", 
+       RowBox[{"-", "3"}]]}]}]}], "}"}]}], "\[IndentingNewLine]", 
+ RowBox[{"oilNovec7500Water", "=", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Rho]", "[", "l", "]"}], "->", "1614"}], ",", 
+    RowBox[{
+     RowBox[{"\[Rho]", "[", "u", "]"}], "->", "998.2"}], ",", 
+    RowBox[{
+     RowBox[{"\[Mu]", "[", "l", "]"}], "->", 
+     RowBox[{"0.77", " ", 
+      SuperscriptBox["10", 
+       RowBox[{"-", "6"}]], " ", "1614"}]}], ",", 
+    RowBox[{
+     RowBox[{"\[Mu]", "[", "u", "]"}], "->", 
+     RowBox[{
+      SuperscriptBox["10", 
+       RowBox[{"-", "6"}]], " ", "998.2"}]}], ",", 
+    RowBox[{"\[Zeta]", "->", 
+     RowBox[{"49.5", " ", 
+      SuperscriptBox["10", 
+       RowBox[{"-", "3"}]]}]}]}], "}"}]}], "\[IndentingNewLine]", 
+ RowBox[{"gearoilAir", "=", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Rho]", "[", "l", "]"}], "->", "888"}], ",", 
+    RowBox[{
+     RowBox[{"\[Rho]", "[", "u", "]"}], "->", "1.19"}], ",", 
+    RowBox[{
+     RowBox[{"\[Mu]", "[", "l", "]"}], "->", 
+     RowBox[{"2.71", " ", 
+      SuperscriptBox["10", 
+       RowBox[{"-", "4"}]]}]}], ",", 
+    RowBox[{
+     RowBox[{"\[Mu]", "[", "u", "]"}], "->", 
+     RowBox[{"1.53", " ", 
+      SuperscriptBox["10", 
+       RowBox[{"-", "5"}]], "1.19"}]}], ",", 
+    RowBox[{"\[Zeta]", "->", 
+     RowBox[{"32.9", " ", 
+      SuperscriptBox["10", 
+       RowBox[{"-", "3"}]]}]}]}], "}"}]}], "\[IndentingNewLine]", 
+ RowBox[{"fluidPairing", "=", 
+  RowBox[{"<|", 
+   RowBox[{
+    RowBox[{"\"\<water-air\>\"", "->", "waterAir"}], ",", 
+    RowBox[{"\"\<oil_novec7500-water\>\"", "->", "oilNovec7500Water"}], ",", 
+    RowBox[{"\"\<gearoil-air\>\"", "->", "gearoilAir"}]}], 
+   "|>"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"wavenumber", "=", 
+   RowBox[{"{", 
+    RowBox[{"k", "->", 
+     RowBox[{"2", 
+      RowBox[{"\[Pi]", "/", "0.0026"}]}]}], "}"}]}], 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "according", " ", "to", " ", "the", " ", "initialized", " ", "wave"}], 
+    ",", " ", 
+    RowBox[{
+     RowBox[{"i", ".", "e", ".", " ", "k"}], " ", "=", " ", 
+     RowBox[{"2", 
+      RowBox[{"\[Pi]", "/", "\[Lambda]"}]}]}]}], " ", 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{"initial", "=", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"a0", "->", 
+     RowBox[{"5.5", " ", 
+      SuperscriptBox["10", 
+       RowBox[{"-", "5"}]]}]}], ",", 
+    RowBox[{"u0", "->", "0"}]}], "}"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"dtReference", "=", "0.0002"}], 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "time", " ", "step", " ", "for", " ", "reference", " ", "time", " ", 
+    "series"}], " ", "*)"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"nPeriods", "=", "5"}], " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "number", " ", "of", " ", "oscillation", " ", "periods", " ", "to", " ", 
+    "include", " ", "in", " ", "reference", " ", "time", " ", "series", " ", 
+    RowBox[{"(", 
+     RowBox[{"based", " ", "on", " ", "asymptotic", " ", "result"}], ")"}]}], 
+   " ", "*)"}], ";"}]}], "Input",
+ CellLabel->"",ExpressionUUID->"3dbc5afe-e888-433d-9276-276c1aea6c00"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Evaluate all cases", \
+"Section",ExpressionUUID->"6ada70fa-7491-4f46-a8a3-992e3b29313e"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"reference", "=", 
+   RowBox[{"<|", 
+    RowBox[{"(*", " ", 
+     RowBox[{"time", " ", 
+      RowBox[{"vs", ".", " ", "aplitude_at"}], "_center"}], " ", "*)"}], 
+    "|>"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"expression", "=", 
+   RowBox[{"<|", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+      RowBox[{"expression", " ", "for", " ", "t"}], "->", "\[Infinity]"}], 
+     " ", "*)"}], "|>"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"properties", "=", 
+   RowBox[{"<|", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "oscillation", " ", "properties", " ", "of", " ", "the", " ", 
+      "solution"}], " ", "*)"}], "|>"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"timeStep", "=", 
+   RowBox[{"<|", 
+    RowBox[{"(*", " ", 
+     RowBox[{
+     "capillary", " ", "time", " ", "step", " ", "as", " ", "a", " ", 
+      "function", " ", "of", " ", "grid", " ", "spacing", " ", "dx"}], " ", 
+     "*)"}], "|>"}]}], ";"}]}], "Input",
+ CellLabel->"",ExpressionUUID->"2a53f4e0-c581-4b3a-b1c8-34eac9e4ae56"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"evaluateFluidPairing", "=", 
+   RowBox[{"Function", "[", 
+    RowBox[{
+     RowBox[{"{", "name", "}"}], ",", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", "buffer", "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"buffer", "=", 
+         RowBox[{
+          RowBox[{"Solve", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                SuperscriptBox["\[Sigma]", "2"], "+", 
+                RowBox[{
+                 RowBox[{"\[CapitalLambda]", "[", "\[Sigma]", "]"}], 
+                 "\[Sigma]"}], "+", 
+                SuperscriptBox["\[Omega]0", "2"]}], "==", "0"}], "/.", 
+              RowBox[{"fluidPairing", "[", "name", "]"}]}], "/.", 
+             "wavenumber"}], ",", "\[Sigma]"}], "]"}], "//", "Simplify"}]}], 
+        ";", "\[IndentingNewLine]", 
+        RowBox[{"buffer", "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"a", "[", "t", "]"}], "/.", 
+                 RowBox[{"(", 
+                  RowBox[{
+                   RowBox[{"Exp", "[", 
+                    RowBox[{"\[Sigma]", " ", "t"}], "]"}], "->", 
+                   RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{"x0", " ", 
+                    RowBox[{"Cos", "[", 
+                    RowBox[{
+                    RowBox[{"Im", "[", "\[Sigma]", "]"}], "t"}], "]"}]}], "+", 
+                    RowBox[{"0", " ", "x1", " ", 
+                    RowBox[{"Sin", "[", 
+                    RowBox[{
+                    RowBox[{"Im", "[", "\[Sigma]", "]"}], "t"}], "]"}]}]}], 
+                    ")"}], 
+                    RowBox[{"Exp", "[", 
+                    RowBox[{
+                    RowBox[{"Re", "[", "\[Sigma]", "]"}], "t"}], "]"}]}]}], 
+                  ")"}]}], "/.", "buffer"}], "/.", 
+               RowBox[{"fluidPairing", "[", "name", "]"}]}], "/.", 
+              "wavenumber"}], "//", "Re"}], "//", "ComplexExpand"}], "//", 
+           "Simplify"}], "//", "First"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"expression", "[", "name", "]"}], "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"buffer", "/.", 
+             RowBox[{"Solve", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{"a0", "==", "buffer"}], "/.", 
+                 RowBox[{"t", "->", "0"}]}], "/.", "initial"}], ",", "x0"}], 
+              "]"}]}], "/.", "initial"}], "//", "Simplify"}], "//", 
+          "First"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"properties", "[", "name", "]"}], "=", 
+         RowBox[{"Association", "@", 
+          RowBox[{"Flatten", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"Cases", "[", 
+              RowBox[{
+               RowBox[{"expression", "[", "name", "]"}], ",", 
+               RowBox[{
+                RowBox[{"Exp", "[", 
+                 RowBox[{"x_", " ", "t"}], "]"}], ":>", 
+                RowBox[{"(", 
+                 RowBox[{"\"\<decayRate\>\"", "->", 
+                  RowBox[{"Abs", "[", "x", "]"}]}], ")"}]}]}], "]"}], ",", 
+             RowBox[{"Cases", "[", 
+              RowBox[{
+               RowBox[{"expression", "[", "name", "]"}], ",", 
+               RowBox[{
+                RowBox[{"Cos", "[", 
+                 RowBox[{"x_", " ", "t"}], "]"}], ":>", 
+                RowBox[{"(", 
+                 RowBox[{"\"\<frequency\>\"", "->", 
+                  FractionBox["x", 
+                   RowBox[{"2", "\[Pi]"}]]}], ")"}]}]}], "]"}]}], "}"}], 
+           "]"}]}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"timeStep", "[", "name", "]"}], "=", 
+         RowBox[{
+          SqrtBox[
+           RowBox[{
+            FractionBox[
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[Rho]", "[", "u", "]"}], "+", 
+               RowBox[{"\[Rho]", "[", "l", "]"}]}], ")"}], 
+             RowBox[{"2", "\[Pi]", " ", "\[Zeta]"}]], 
+            SuperscriptBox["dx", "3"]}]], "/.", 
+          RowBox[{"fluidPairing", "[", "name", "]"}]}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"reference", "[", "name", "]"}], "=", 
+         RowBox[{"ParallelTable", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"t", ",", 
+             RowBox[{"InverseLaplaceTransform", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{
+                 RowBox[{
+                  RowBox[{
+                   FractionBox["1", "s"], 
+                   RowBox[{"(", 
+                    RowBox[{"a0", "+", 
+                    FractionBox[
+                    RowBox[{
+                    RowBox[{"s", " ", "u0"}], "-", 
+                    RowBox[{
+                    SuperscriptBox["\[Omega]0", "2"], "a0"}]}], 
+                    RowBox[{
+                    SuperscriptBox["s", "2"], "+", 
+                    RowBox[{
+                    RowBox[{"\[CapitalLambda]", "[", "s", "]"}], "s"}], "+", 
+                    SuperscriptBox["\[Omega]0", "2"]}]]}], ")"}]}], "/.", 
+                  RowBox[{"fluidPairing", "[", "name", "]"}]}], "/.", 
+                 "wavenumber"}], "/.", "initial"}], ",", "s", ",", "t"}], 
+              "]"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"t", ",", "0.001", ",", 
+             RowBox[{"nPeriods", "/", 
+              RowBox[{"properties", "[", 
+               RowBox[{"name", ",", "\"\<frequency\>\""}], "]"}]}], ",", 
+             "dtReference"}], "}"}]}], "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Show", "[", 
+         RowBox[{
+          RowBox[{"Plot", "[", 
+           RowBox[{
+            RowBox[{"expression", "[", "name", "]"}], ",", 
+            RowBox[{"{", 
+             RowBox[{"t", ",", "0", ",", 
+              RowBox[{"nPeriods", "/", 
+               RowBox[{"properties", "[", 
+                RowBox[{"name", ",", "\"\<frequency\>\""}], "]"}]}]}], 
+             "}"}]}], "]"}], ",", 
+          RowBox[{"ListPlot", "[", 
+           RowBox[{
+            RowBox[{"reference", "[", "name", "]"}], ",", 
+            RowBox[{"PlotMarkers", "\[Rule]", "\"\<OpenMarkers\>\""}]}], 
+           "]"}], ",", 
+          RowBox[{"PlotLabel", "->", "name"}]}], "]"}]}]}], "]"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"evaluateFluidPairing", "/@", 
+  RowBox[{"Keys", "[", "fluidPairing", "]"}]}]}], "Input",
+ CellLabel->"",ExpressionUUID->"61bd971e-370a-4529-94a0-707c54d7ca02"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Evaluate time stepping parameters", \
+"Section",ExpressionUUID->"f1e7717d-b00f-4db1-af6a-358ba62f0b44"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"computeTimeStepSettings", "[", 
+   RowBox[{"pairing_", ",", "domainLength_", ",", "numberOfCells_"}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"dt", "=", 
+      RowBox[{
+       RowBox[{"timeStep", "[", "\"\<water-air\>\"", "]"}], "/.", 
+       RowBox[{"dx", "->", 
+        RowBox[{"domainLength", "/", "numberOfCells"}]}]}]}], "}"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"dt", ",", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"reference", "[", "\"\<water-air\>\"", "]"}], "[", 
+        RowBox[{"[", 
+         RowBox[{
+          RowBox[{"-", "1"}], ",", "1"}], "]"}], "]"}], "/", "dt"}], ",", 
+      RowBox[{
+       RowBox[{"reference", "[", "\"\<water-air\>\"", "]"}], "[", 
+       RowBox[{"[", 
+        RowBox[{
+         RowBox[{"-", "1"}], ",", "1"}], "]"}], "]"}]}], "}"}]}], 
+   "]"}]}]], "Input",
+ CellLabel->"",ExpressionUUID->"33087e46-5b7d-40e9-a94f-db0ddff3ce77"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"#", ",", 
+      RowBox[{"computeTimeStepSettings", "[", 
+       RowBox[{"\"\<water-air\>\"", ",", "0.0026", ",", "#"}], "]"}]}], "}"}],
+     "&"}], "/@", 
+   RowBox[{"{", 
+    RowBox[{"32", ",", "64", ",", "128"}], "}"}]}], "//", 
+  "TableForm"}]], "Input",
+ CellLabel->"",ExpressionUUID->"0f4a1d27-a385-4a58-aa82-3a0b58b15f0d"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"#", ",", 
+      RowBox[{"computeTimeStepSettings", "[", 
+       RowBox[{"\"\<water-air\>\"", ",", "0.01", ",", "#"}], "]"}]}], "}"}], 
+    "&"}], "/@", 
+   RowBox[{"{", 
+    RowBox[{"32", ",", "64", ",", "128"}], "}"}]}], "//", 
+  "TableForm"}]], "Input",
+ CellLabel->"",ExpressionUUID->"7a33d7a5-c15c-423e-9cec-bb6d52ed96e0"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Export data", \
+"Section",ExpressionUUID->"40366276-dfdc-45b5-8c4f-1d58313d30a8"],
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      "\"\<reference_2D_oscillating_wave.csv\>\""}], "}"}], "]"}], ",", 
+   RowBox[{"Join", "@@", 
+    RowBox[{"KeyValueMap", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Transpose", "[", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"ConstantArray", "[", 
+           RowBox[{"#1", ",", 
+            RowBox[{"Length", "@", "#2"}]}], "]"}], ",", 
+          RowBox[{"#2", "[", 
+           RowBox[{"[", 
+            RowBox[{"All", ",", "1"}], "]"}], "]"}], ",", 
+          RowBox[{"#2", "[", 
+           RowBox[{"[", 
+            RowBox[{"All", ",", "2"}], "]"}], "]"}]}], "}"}], "]"}], "&"}], 
+      ",", "reference"}], "]"}]}], ",", "\"\<CSV\>\"", ",", 
+   RowBox[{"TableHeadings", "->", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<fluid_pairing\>\"", ",", "\"\<time\>\"", ",", 
+      "\"\<amplitude_at_center\>\""}], "}"}]}], ",", 
+   RowBox[{"\"\<TextDelimiters\>\"", "->", "\"\<\>\""}]}], "]"}]], "Input",
+ CellLabel->"",ExpressionUUID->"a2d552da-75de-4ad8-9300-881d9b81d989"],
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+      "\"\<reference_asymptotic_2D_oscillating_wave.csv\>\""}], "}"}], "]"}], 
+   ",", 
+   RowBox[{"KeyValueMap", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"#1", ",", 
+        RowBox[{"TeXForm", "[", "#2", "]"}], ",", 
+        RowBox[{"properties", "[", 
+         RowBox[{"#1", ",", "\"\<decayRate\>\""}], "]"}], ",", 
+        RowBox[{"properties", "[", 
+         RowBox[{"#1", ",", "\"\<frequency\>\""}], "]"}]}], "}"}], "&"}], ",",
+      "expression"}], "]"}], ",", 
+   RowBox[{"TableHeadings", "->", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<fluid_pairing\>\"", ",", "\"\<expression\>\"", ",", 
+      "\"\<decay rate\>\"", ",", "\"\<frequency\>\""}], "}"}]}], ",", 
+   RowBox[{"\"\<TextDelimiters\>\"", "->", "\"\<\>\""}]}], "]"}]], "Input",
+ CellLabel->"",ExpressionUUID->"70ac500a-3e56-4548-a1d6-6471d5df2a2f"],
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"FileNameJoin", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"NotebookDirectory", "[", "]"}], ",", "\"\<time_step.csv\>\""}],
+      "}"}], "]"}], ",", 
+   RowBox[{"KeyValueMap", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"#1", ",", 
+        RowBox[{"TeXForm", "[", "#2", "]"}]}], "}"}], "&"}], ",", 
+     "timeStep"}], "]"}], ",", 
+   RowBox[{"TableHeadings", "->", 
+    RowBox[{"{", 
+     RowBox[{"\"\<fluid_pairing\>\"", ",", "\"\<time step\>\""}], "}"}]}], 
+   ",", 
+   RowBox[{"\"\<TextDelimiters\>\"", "->", "\"\<\>\""}]}], "]"}]], "Input",
+ CellLabel->"",ExpressionUUID->"da834a0b-4985-408d-b352-2f30b7b3bbf9"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Association", "/@", "fluidPairing"}], "//", 
+  "Dataset"}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{"\"\<fluidPairings.png\>\"", ",", "%"}], "]"}]}], "Input",
+ CellLabel->"",ExpressionUUID->"a3481c69-1a8e-427d-aa6b-f31c6e3d4071"]
+}, Open  ]]
+}, Open  ]]
+},
+NotebookEventActions->{"WindowClose" -> Null},
+WindowSize->{949.6800000000001, 467.28000000000003`},
+WindowMargins->{{115.2, Automatic}, {30.24000000000001, Automatic}},
+PrivateNotebookOptions->{"FileOutlineCache"->False},
+CreateCellID->False,
+TrackCellChangeTimes->False,
+FrontEndVersion->"13.0 for Linux x86 (64-bit) (February 4, 2022)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"7feba334-e45c-42c6-b8eb-65f98b576a51"
+]
+
