@@ -1,0 +1,22 @@
+#!/usr/bin/bash
+
+# Create mesh
+|-MESHER-|
+
+# Initialize alpha field
+setAlphaField
+
+<!--(if N_CORES_TOTAL > 1)-->
+# Decompose for parallel computation. Only if more than 1 core is used.
+decomposePar
+<!--(end)-->
+
+# Adapt this to your cluster's job submission system. 
+# Avaialable parameters are:
+# - |-N_CORES_TOTAL-|
+# - |-MEMORY_PER_CORE-|
+<!--(if "interFlow" in solver)-->
+mpirun -n |-N_CORES_TOTAL-| interFlow -parallel
+<!--(else)-->
+mpirun -n |-N_CORES_TOTAL-| |-solver-| -parallel
+<!--(end)-->

@@ -1,0 +1,85 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      transportProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+phases          (dispersed continuous);
+
+// Define fluid properties as dictionaries here and reference them to set the
+// properties for each fluid pairing. Thus, duplication is avoided.
+// Properties are given for T=20 degree Celsius
+
+water
+{
+    transportModel  Newtonian;
+    nu              1.0e-6;
+    rho             998.2;
+}
+
+air
+{
+    transportModel  Newtonian;
+    nu              1.53e-5;
+    rho             1.19;
+}
+
+gearoil
+{
+    transportModel  Newtonian;
+    nu              2.71e-4;
+    rho             888.0;
+}
+
+oil_novec7500
+{
+    transportModel  Newtonian;
+    nu              0.77e-6;
+    rho             1614.0;
+}
+
+<!--(if FLUID_PAIRING=="water-air")-->
+    dispersed   { $water }
+    continuous  { $air }
+    sigma       72.74e-3;
+
+<!--(elif FLUID_PAIRING=="oil_novec7500-water")-->
+    dispersed   { $oil_novec7500 }
+    continuous  { $water }
+    sigma       49.5e-3;
+
+<!--(elif FLUID_PAIRING=="gearoil-air")-->
+    dispersed   { $gearoil }
+    continuous  { $air }
+    sigma       30.0e-3;
+
+<!--(end)-->
+
+// Only relevant for interFlow
+surfaceForces
+{
+    sigma $sigma;
+
+    <!--(if solver=="interFlow-fP")-->
+        surfaceTensionForceModel fitParaboloid;
+    <!--(elif solver=="interFlow-RDF")-->
+        surfaceTensionForceModel RDF;
+    <!--(end)-->
+
+    accelerationModel gravity;
+    deltaFunctionModel alphaCSF;
+}
+
+
+// ************************************************************************* //

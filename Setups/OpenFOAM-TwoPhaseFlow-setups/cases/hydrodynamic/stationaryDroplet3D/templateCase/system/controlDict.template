@@ -1,0 +1,151 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v1912                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+    class           dictionary;
+    location        "system";
+    object          controlDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     |-solver-|;
+
+startFrom       startTime;
+
+startTime       0.0;
+
+stopAt          endTime;
+
+endTime         0.1;
+
+deltaT          |-DELTA_T-|;
+
+writeControl    timeStep;
+
+writeInterval   1000;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  14;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+graphFormat     raw;
+
+runTimeModifiable yes;
+
+adjustTimeStep  no;
+
+maxCo           1e6;
+maxAlphaCo      0.5;
+
+// Only relevant for interFlow
+maxCapillaryNum 10;
+
+maxDeltaT       1e6;
+
+functions 
+{
+    minMaxU 
+    {
+        type        fieldMinMax;
+        libs        (fieldFunctionObjects);
+        writeToFile yes;
+        log         yes;
+        location    no;
+        mode        magnitude;
+        fields      (U);
+    }
+
+    // Auxilliary field for function object to operate on
+    magU
+    {
+        // Mandatory entries (unmodifiable)
+        type            mag;
+        libs            (fieldFunctionObjects);
+
+        // Mandatory (inherited) entries (runtime modifiable)
+        field           U;
+
+        // Optional (inherited) entries
+        result          magU;
+        writeControl    timeStep;
+        writeInterval   $writeInterval;
+    }
+
+    l1normU
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+
+        writeControl    timeStep;
+        writeInterval   1;
+        writeFields     false;
+        log             true;
+
+        operation       average;
+        postOperation   none;
+
+        fields          (magU);
+    }
+
+    // Auxilliary field for function object to operate on
+    magSqrU
+    {
+        // Mandatory entries (unmodifiable)
+        type            magSqr;
+        libs            (fieldFunctionObjects);
+
+        // Mandatory (inherited) entries (runtime modifiable)
+        field           U;
+
+        // Optional (inherited) entries
+        result          magSqrU;
+        writeControl    timeStep;
+        writeInterval   $writeInterval;
+    }
+
+    l2normU
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+
+        writeControl    timeStep;
+        writeInterval   1;
+        writeFields     false;
+        log             true;
+
+        operation       average;
+        postOperation   sqrt;
+
+        fields          (magSqrU);
+    }
+
+    /* only works for solvers providing the field 'cellCurvature'
+    curvatureEval
+    {
+        type                curvatureEvaluation;
+        libs                ("libpandora");
+        vofFieldName        alpha.dispersed;
+        curvatureFieldName  cellCurvature;
+        exactCurvature      2000.0;
+    }
+    */
+}
+
+// ************************************************************************* //

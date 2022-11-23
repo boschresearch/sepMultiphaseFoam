@@ -1,0 +1,22 @@
+// Parameter study to examine OpenFOAM's VoF solver interFoam and interIsoFoam
+
+values
+{
+    RESOLUTION
+    (
+        32 64 128
+    );
+
+    // Time step is computed according to the capillary wave criterion
+    // DELTA_T
+
+    FLUID_PAIRING
+    ( 
+        water-air oil_novec7500-water gearoil-air
+    );
+
+    solver ( interFoam interIsoFoam interFlow-fP interFlow-RDF );
+
+    // Job script related parameters
+    MESHER      ( blockMesh );
+}

@@ -1,0 +1,97 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2012                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     |-solver-|;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+<!--(if FLUID_PAIRING=="water-air")-->
+endTime         0.031;
+
+<!--(elif FLUID_PAIRING=="oil_novec7500-water")-->
+endTime         0.0628;
+
+<!--(elif FLUID_PAIRING=="gearoil-air")-->
+endTime         0.0434;
+
+<!--(end)-->
+
+deltaT          |-DELTA_T-|;
+
+writeControl    adjustable;
+
+writeInterval   0.005;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+
+adjustTimeStep  no;
+
+maxCo           0.5;
+
+maxAlphaCo      0.5;
+
+// Only relevant for interFlow
+maxCapillaryNum 10;
+
+maxDeltaT       1;
+
+
+
+functions    // sub-dictionary name under the system/controlDict file
+{
+    // See
+    // https://www.openfoam.com/documentation/guides/latest/doc/guide-fos-field-interfaceHeight.html
+    // for documentation of the interfaceHeight function object
+    interfaceHeight1
+    {
+        // Mandatory entries (unmodifiable)
+        type            interfaceHeight;
+        libs            (fieldFunctionObjects);
+
+        // Mandatory entries (runtime modifiable)
+        locations       ((0.0013 0 0));
+
+        // Optional entries (runtime modifiable)
+        alpha           alpha.dispersed;
+        liquid          true;
+        // The search directions has to be reversed to obtain proper values for interfaceHeight
+        // above location (TT)
+        direction       (0 0 -1);
+        interpolationScheme    cellPoint;
+
+        // Optional (inherited) entries. Most not listed as defaults are fine.
+        // See 'functionObject' and 'writeFile' in OpenFOAM's Extended Code Guide.
+        writePrecision  8;
+    }
+}
+// ************************************************************************* //

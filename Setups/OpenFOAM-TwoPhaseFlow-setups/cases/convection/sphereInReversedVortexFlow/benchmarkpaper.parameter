@@ -1,0 +1,9 @@
+values
+{
+	DELTA_T     ( 1e-5 );
+	RESOLUTION  ( 64 128 256 );
+	solver      ( interFoam interIsoFoam );
+
+    // Fixed parameters for job script setup
+    MESHER              ( blockMesh );
+}

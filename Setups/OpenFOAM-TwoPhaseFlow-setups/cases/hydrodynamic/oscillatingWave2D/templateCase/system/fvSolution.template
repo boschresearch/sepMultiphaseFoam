@@ -1,0 +1,108 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2012                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "alpha.*"
+    {
+    <!--(if solver=="interIsoFoam")-->
+        isoFaceTol      1e-8;
+        surfCellTol     1e-8;
+        nAlphaBounds    3;
+        snapTol         1e-12;
+        clip            true;
+
+        nAlphaSubCycles 2;
+        cAlpha          1;
+        nAlphaCorr      1;
+        reconstructionScheme  plicRDF;
+    <!--(elif solver=="interFoam")-->
+        nAlphaCorr      1;
+        nAlphaSubCycles 2;
+        cAlpha          1;
+    <!--(elif solver=="interFlow-fP" or solver=="interFlow-RDF")-->
+        // Entries taken from "TwoPhaseFlow/testsuite/surfaceTension/sinWave/system/fvSolution"
+        advectionScheme isoAdvection;
+
+	    reconstructionScheme plicRDF;
+
+		vof2IsoTol      1e-8;
+		surfCellTol     1e-8;
+		writeVTK        false;
+
+
+        isoFaceTol      1e-8;
+        surfCellTol     1e-8;
+        nAlphaBounds    3;
+        snapTol         1e-12;
+        clip            true;
+
+        nAlphaSubCycles 2;
+        nAlphaCorr      1;
+        cAlpha          1;
+        writeIsoFaces   false;
+    <!--(end)-->
+    }
+
+    "pcorr.*"
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-8;
+        relTol          0;
+    }
+
+    p_rgh
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-08;
+        relTol          0;
+    }
+
+    p_rghFinal
+    {
+        $p_rgh;
+        tolerance       1e-09;
+        relTol          0;
+    }
+
+    U
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-08;
+        relTol          0;
+    }
+
+    UFinal
+    {
+        $U;
+    }
+}
+
+PIMPLE
+{
+    momentumPredictor   yes;
+    nOuterCorrectors    1;
+    nCorrectors         3;
+    nNonOrthogonalCorrectors 0;
+    pRefCell        0;
+    pRefValue       0;
+}
+
+// ************************************************************************* //

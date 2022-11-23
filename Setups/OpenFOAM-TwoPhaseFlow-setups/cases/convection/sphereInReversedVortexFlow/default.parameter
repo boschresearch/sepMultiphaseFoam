@@ -1,0 +1,3 @@
+RESOLUTION      setRESOLUTION;
+DELTA_T         setDELTA_T;
+solver          setSolver;

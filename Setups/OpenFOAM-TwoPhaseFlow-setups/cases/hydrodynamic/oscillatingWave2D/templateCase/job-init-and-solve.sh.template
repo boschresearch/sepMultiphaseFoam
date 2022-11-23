@@ -1,0 +1,25 @@
+#!/usr/bin/bash
+
+# NOTE: this case setup is not prepared for parallel runs.
+# Even with a resolution of 256x256 cells we are well below
+# the 100k cells/per core threshold.
+
+# Create mesh
+|-MESHER-|
+
+# Initialize alpha field
+<!--(if INIT_APPROACH=="setAlphaField")-->
+setAlphaField
+<!--(elif INIT_APPROACH=="inside-outside")-->
+setAlphaField
+cp 0/alpha.dispersed 0/inputField
+sed -i 's/alpha\.dispersed/inputField/g' 0/inputField
+setFields
+<!--(end)-->
+
+# Run solver
+<!--(if "interFlow" in solver)-->
+interFlow
+<!--(else)-->
+|-solver-|
+<!--(end)-->

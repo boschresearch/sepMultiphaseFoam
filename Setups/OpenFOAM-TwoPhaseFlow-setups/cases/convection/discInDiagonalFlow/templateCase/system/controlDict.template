@@ -1,0 +1,168 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2012                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+    class           dictionary;
+    location        "system";
+    object          controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     |-solver-|;
+
+startFrom       latestTime;
+
+startTime       0.0;
+
+stopAt          endTime;
+
+endTime         4;
+
+writeControl    adjustable;
+
+writeInterval   0.5;
+
+deltaT          |-DELTA_T-|;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  14;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+graphFormat     raw;
+
+runTimeModifiable no;
+
+adjustTimeStep  no;//yes;
+
+maxCo           1e6;
+
+maxAlphaCo      0.5;
+
+maxDeltaT       1e6;
+
+
+functions
+{
+    setVelocity
+    {
+        type            setFlow;
+        libs            (fieldFunctionObjects);
+        writeControl    writeTime;
+        mode            function;
+        scale           1;
+        velocity        (1 0 0.5);
+        // After given time in seconds, reverse direction of flow,
+        // see https://www.openfoam.com/documentation/guides/latest/doc/guide-fos-field-setFlow.html
+        // for the documentation of setFlow.
+        reverseTime     2;
+    }
+
+    advectionErrors
+    {
+        type coded;
+        libs (utilityFunctionObjects);
+
+        // Name of on-the-fly generated functionObject
+        name advectionErrors;
+
+        codeInclude
+        #{
+            #include <sstream>
+            #include <cmath>
+        #};
+
+        codeEnd
+        #{
+            const auto& runTime = mesh().time();
+
+            std::stringstream startstr, endstr; 
+            startstr << runTime.startTime().value();
+            endstr << runTime.endTime().value();
+
+            volScalarField alphaBegin
+            (
+                IOobject
+                (
+                    "alpha.water", 
+                    startstr.str(), 
+                    runTime, 
+                    IOobject::MUST_READ, 
+                    IOobject::NO_WRITE
+
+                ),
+                mesh()
+            );
+
+
+            volScalarField alphaEnd 
+            (
+                IOobject
+                (
+                    "alpha.water", 
+                    endstr.str(), 
+                    runTime, 
+                    IOobject::MUST_READ, 
+                    IOobject::NO_WRITE
+
+                ),
+                mesh()
+            );
+
+            scalar L1_SHAPE_ERROR = Foam::gSum(
+                mesh().V() * Foam::mag(alphaEnd - alphaBegin)
+            );
+
+            scalar VOLUME_ERROR = Foam::mag(
+                Foam::gSum(mesh().V() * Foam::mag(alphaEnd)) - 
+                Foam::gSum(mesh().V() * Foam::mag(alphaBegin)) 
+            );
+
+            dimensionedScalar zero("0", alphaEnd.dimensions(), 0.);
+            scalar overshoot = Foam::max(
+                alphaEnd - dimensionedScalar("1", alphaEnd.dimensions(), 1.)
+            ).value(); 
+            scalar undershoot = Foam::max(Foam::max(-alphaEnd).value(), 0.);
+            scalar BOUNDEDNESS_ERROR = Foam::max(
+                 Foam::max(overshoot, 0.),  
+                 Foam::max(undershoot, 0.)  
+            );
+
+            scalar MIN_ALPHA = Foam::min(alphaEnd).value();
+            scalar MAX_ALPHA = Foam::max(alphaEnd).value();
+
+            // Ensure result file is placed in its corresponding case dictionary
+            fileName dataFileName = runTime.rootPath() + "/" + time_.globalCaseName() + "/"
+                                    + "advectionErrors.csv";
+            OFstream errorFile(dataFileName); 
+            errorFile << "T_END,N_CELLS,N_CELLS_PER_AXIS,L1_SHAPE_ERROR,"
+                << "VOLUME_ERROR,BOUNDEDNESS_ERROR,MIN_ALPHA,MAX_ALPHA\n";
+            errorFile << runTime.endTime().value() << "," 
+                << mesh().nCells() << ","
+                << Foam::sqrt(double(mesh().nCells())) << "," 
+                << L1_SHAPE_ERROR << "," 
+                << VOLUME_ERROR << "," 
+                << BOUNDEDNESS_ERROR << "," 
+                << MIN_ALPHA << ","
+                << MAX_ALPHA << "\n"; 
+
+        #};
+    }
+}
+
+
+// ************************************************************************* //

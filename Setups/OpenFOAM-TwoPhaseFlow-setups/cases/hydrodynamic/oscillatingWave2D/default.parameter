@@ -1,0 +1,20 @@
+// Default values for parameters.
+// Some of the specified values do not work and will cause
+// errors for methods that do use them.
+// This is intended. The purpose of this file is that
+// a parameter file only needs to specify those
+// parameters that are actually used/varied in a study.
+//
+// In addition, some parameters that are identical for all studies,
+// but required as parameters for other reasons, are given here.
+
+// Parameters identical for all studies
+DOMAIN_LENGTH               0.0026;
+SCALE_CAPILLARY_DELTA_T     1.0;
+INIT_APPROACH               setAlphaField;
+
+
+// Parameters set to invalid feault values
+// General parameters
+FLUID_PAIRING   none;
+RESOLUTION      none;

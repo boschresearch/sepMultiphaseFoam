@@ -1,0 +1,16 @@
+PyFoam*
+__pycache__/
+*.csv 
+*.pdf
+*.png
+*.stl 
+*.pvsm 
+*.gz
+*.tgz
+*.zip
+.ipynb_checkpoints/
+*parameter_*
+*.database
+*.variations
+*.vtk 
+*.msh

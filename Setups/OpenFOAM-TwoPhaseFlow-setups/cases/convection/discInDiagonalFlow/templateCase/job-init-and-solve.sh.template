@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+# Create mesh
+|-MESHER-|
+
+# Initialize alpha field
+setAlphaField
+
+# Run the solver
+|-solver-|

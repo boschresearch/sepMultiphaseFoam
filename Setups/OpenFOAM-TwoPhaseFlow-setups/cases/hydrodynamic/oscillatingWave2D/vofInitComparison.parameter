@@ -1,0 +1,25 @@
+values
+{
+    RESOLUTION
+    (
+        32 64 128
+    );
+
+    // Time step is computed according to the capillary wave criterion
+    // DELTA_T
+
+    FLUID_PAIRING
+    ( 
+        water-air 
+    );
+
+    INIT_APPROACH
+    (
+        inside-outside setAlphaField
+    );
+
+    solver ( interIsoFoam );
+
+    // Job script related parameters
+    MESHER          ( blockMesh );
+}
