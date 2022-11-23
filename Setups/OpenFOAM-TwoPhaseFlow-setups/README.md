@@ -1,4 +1,5 @@
 # OpenFOAM / TwoPhaseFlow setups: interFoam, interIsoFoam, interFlow
+Test suite for multiphase related academic benchmarks using OpenFOAM and OpenFOAM-based (TwoPhaseFlow) solvers.
 
 ## Getting started
 
