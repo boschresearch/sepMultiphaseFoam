@@ -1,0 +1,9 @@
+# encoding: utf-8
+# 2021 R1
+SetScriptVersion(Version="21.1.216")
+system1 = GetSystem(Name="FFF")
+meshComponent1 = system1.GetComponent(Name="Mesh")
+meshComponent1.Clean()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Open(FilePath="/gpfs3/scratch/user/dor1rng/vof_fluent/stationary-droplet-3D/cubeNew.wbpj")

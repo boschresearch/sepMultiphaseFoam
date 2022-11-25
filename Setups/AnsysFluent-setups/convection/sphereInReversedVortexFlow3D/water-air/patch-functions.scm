@@ -1,0 +1,6 @@
+(custom-field-function/define
+ '(((name droplet3d-x0) (display "0.35") (syntax-tree 0.35) (code 0.35))
+   ((name droplet3d-r0) (display "0.15") (syntax-tree 0.15) (code 0.15))
+   ((name droplet3d-delta) (display "0.00001") (syntax-tree 1e-05) (code 1e-05))
+   ((name droplet3d) (display "1 / 2 +  atan ((1 - sqrt ((x - droplet3d-x0) ^ 2 / droplet3d-r0 ^ 2 + (y - droplet3d-x0) ^ 2 / droplet3d-r0 ^ 2 + (z - droplet3d-x0) ^ 2 / droplet3d-r0 ^ 2)) / droplet3d-delta) / pi") (syntax-tree ("+" 0.5 ("/" ("atan" ("/" ("-" 1 ("sqrt" ("+" ("+" ("/" ("**" ("-" "x-coordinate" "droplet3d-x0") 2) ("**" "droplet3d-r0" 2)) ("/" ("**" ("-" "y-coordinate" "droplet3d-x0") 2) ("**" "droplet3d-r0" 2))) ("/" ("**" ("-" "z-coordinate" "droplet3d-x0") 2) ("**" "droplet3d-r0" 2))))) "droplet3d-delta")) 3.141592653589793))) (code (field-+ 0.5 (field-/ (field-atan (field-/ (field-- 1 (field-sqrt (field-+ (field-+ (field-/ (field-** (field-- (field-load "x-coordinate") (cx-field-eval "droplet3d-x0")) 2) (field-** (cx-field-eval "droplet3d-r0") 2)) (field-/ (field-** (field-- (field-load "y-coordinate") (cx-field-eval "droplet3d-x0")) 2) (field-** (cx-field-eval "droplet3d-r0") 2))) (field-/ (field-** (field-- (field-load "z-coordinate") (cx-field-eval "droplet3d-x0")) 2) (field-** (cx-field-eval "droplet3d-r0") 2))))) (cx-field-eval "droplet3d-delta"))) 3.141592653589793))))
+   ))

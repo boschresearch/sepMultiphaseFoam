@@ -1,0 +1,149 @@
+(define cutoff 1e-08)
+;
+(define sigma 0.07274)
+(define density_air 1.19)
+(define viscosity_air 0.000018207)
+(define density_droplet 998.2)
+(define viscosity_droplet 0.0009982)
+;
+; filename variables are not expanded...
+(rp-var-define 'meshfile "../mesh/3D-0-005x0-005x0-005-50x50x50.msh" 'string #f)
+(rp-var-define 'casefile "fluent-50x50x50.cas" 'string #f)
+(rp-var-define 'outputfile "output50x50x50/out.log" 'string #f)
+(rp-var-define 'transcriptfile "fluent-50x50x50.log" 'string #f)
+;
+(define time_step 4.676180000000001e-05)
+(define niter 428)
+(define ntimestepiter 3); max. number of iterations per time step
+;
+file/confirm-overwrite? no
+;
+(ti-menu-load-string (format #f "/file/start-transcript ~s" (rpgetvar 'transcriptfile)))
+;
+(ti-menu-load-string (format #f "/file/read-case ~s" (rpgetvar 'meshfile)))
+;-----------------------------------
+/define/materials/change-create
+air
+air
+yes
+constant
+density_air ; density
+no
+no
+yes
+constant
+viscosity_air ; viscosity
+no
+no
+no
+/define/materials/change-create
+air ; default name
+droplet ; the new name
+yes
+constant
+density_droplet ; density
+no
+no
+yes
+constant
+viscosity_droplet ; viscosity
+no
+no
+no
+no; do not overwrite air but create a new fluid
+;-----------------------------------
+/define/models/viscous/laminar? yes
+/define/models/multiphase/model/vof
+/define/phases/phase-domain/
+phase-1
+air
+yes ; material-name [air]: Change current value? [no]
+air
+/define/phases/phase-domain/
+phase-2
+droplet
+yes
+droplet
+;-------------------------------------------------------------------
+/define/models/multiphase/volume-fraction-parameters
+explicit ; vof formulation, default
+0.25 ; courant number, default
+cutoff ; specify volume fraction cutoff
+/define/phases/interaction-domain
+0; Number of Mass Transfer Mechanisms [0] 
+yes ; Surface Tension Force Modeling [yes] 
+yes ; Surface Tension Model: continuum-surface-force [yes]
+no ; Wall Adhesion [no] 
+no ; Jump Adhesion [no] 
+yes ; Surface Tension Coefficients (n/m) : Change current values? [no] yes
+;water-air:
+constant ; methods: (none constant user-defined)
+sigma ; value (n/m)
+;---------------------------------------------------------------------------
+/define/boundary-conditions/zone-type
+boundary
+symmetry
+;----------------------------------------------------------------------------
+(ti-menu-load-string (format #f "/file/transient-export/ascii ~s () droplet-vof quit yes yes export-vof time-step 1 flow-time 7" (rpgetvar 'outputfile))); export transient data (time step name appendix)
+;----------------------------------------------------------------------------
+;(ti-menu-load-string (format #f "solve report-definitions add vel-max surface-facetmax surface-names domain () per-surface? no field mixture velocity-magnitude q q q"))
+;(ti-menu-load-string (format #f "solve report-definitions add vel-min surface-facetmin surface-names domain () per-surface? no field mixture velocity-magnitude q q q"))
+;(ti-menu-load-string (format #f "solve report-definitions add vel-std surface-stddev surface-names domain () per-surface? no field mixture velocity-magnitude q q q"))
+;/solve/report-files/add/vel-max
+;(ti-menu-load-string (format #f "/solve/report-files/edit/vel-max/file-name ~s\n" (rpgetvar 'reportfilemax)))
+;/solve/report-files/edit/vel-max/frequency-of time-step
+;/solve/report-files/edit/vel-max/frequency 1
+;/solve/report-files/add/vel-min
+;(ti-menu-load-string (format #f "/solve/report-files/edit/vel-min/file-name ~s\n" (rpgetvar 'reportfilemin)))
+;/solve/report-files/edit/vel-min/frequency-of time-step
+;/solve/report-files/edit/vel-min/frequency 1
+;/solve/report-files/add/vel-std
+;(ti-menu-load-string (format #f "/solve/report-files/edit/vel-std/file-name ~s\n" (rpgetvar 'reportfilestd)))
+;/solve/report-files/edit/vel-std/frequency-of time-step
+;/solve/report-files/edit/vel-std/frequency 1
+;----------------------------------------------------------------------------
+/solve/set/p-v-coupling 22;20 SIMPLE 21 SIMPLEC 22 PISO 23 Coupled
+;/solve/set/under-relaxation/mom 1
+;/solve/set/under-relaxation/body-force 1
+;/solve/set/under-relaxation/density 1
+;/solve/set/under-relaxation/pressure 1
+;----------------------------------------------------------------------------
+/define/custom-field-functions/load "patch-functions.scm"
+/solve/initialize/vof-patch-smooth-options/set-options/patch-reconstructed-interface? yes
+yes; smoothing? --> will be performed only with /solve/initialize/vof-patch-smooth-options/execute-smoothing
+0.25; relaxation factor
+/solve/initialize/hyb-initialization ; use "file/confirm-overwrite? no" to discard data
+/solve/patch
+droplet
+domain
+()
+mp
+yes
+droplet3d
+/solve/initialize/vof-patch-smooth-options/execute-smoothing
+(ti-menu-load-string (format #f "/file/export/ascii ~s () yes droplet-vof quit yes" (rpgetvar 'outputfile))); export initial data (no file name appendix)
+;----------------------------------------------------------------------------
+;/solve/initialize/hyb-initialization ; this only works from a fresh case, otherwise it will ask if data shall be discarded
+;/solve/initialize/vof-patch-smooth-options/execute-smoothing
+/solve/monitors/residual/check-convergence? no no no
+;/solve/monitors/residual/criterion-type 1; relative
+;/solve/monitors/residual/relative-conv-criteria
+;0.001; continuity
+;0.001; x-velocity
+;0.001; y-velocity
+/solve/monitors/residual/plot? no
+/solve/set/time-step time_step
+(ti-menu-load-string (format #f "/file/write-case ~s" (rpgetvar 'casefile)))
+;----------------------------------------------------------------------------
+/solve/dual-time-iterate niter ntimestepiter
+;----------------------------------------------------------------------------
+;file/confirm-overwrite? no
+;(ti-menu-load-string (format #f "/report/surface-integrals/facet-max (1) mixture velocity-magnitude yes ~s\n" (rpgetvar 'reportfilemax)))
+;(ti-menu-load-string (format #f "/report/surface-integrals/facet-min (1) mixture velocity-magnitude yes ~s\n" (rpgetvar 'reportfilemin)))
+;(ti-menu-load-string (format #f "/report/surface-integrals/standard-deviation (1) mixture velocity-magnitude yes ~s\n" (rpgetvar 'reportfilestd)))
+
+;----------------------------------------------------------------------------
+(ti-menu-load-string (format #f "/file/write-case-data ~s" (rpgetvar 'casefile)))
+;
+/file/stop-transcript
+exit

@@ -1,0 +1,9 @@
+# encoding: utf-8
+# 2019 R2
+SetScriptVersion(Version="19.4.159")
+system1 = GetSystem(Name="FFF")
+meshComponent1 = system1.GetComponent(Name="Mesh")
+meshComponent1.Clean()
+setupComponent1 = system1.GetComponent(Name="Setup")
+setupComponent1.Clean()
+Save(Overwrite=True)
