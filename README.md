@@ -1,6 +1,6 @@
 # Artificial Viscosity / Wisp Correction for OpenFOAM
 
-This branch contains the implementations and test cases discussed in the publication "Stabilizing the unstructured Volume-of-Fluid method for for capillary flows in micro-structures using artificial viscosity" [paper source].
+This branch contains the implementations and test cases discussed in the publication "Stabilizing the unstructured Volume-of-Fluid method for capillary flows in micro-structures using artificial viscosity" [(Preprint on ArXiV)](https://arxiv.org/abs/2306.11532).
 
 Based on OpenFOAM-v2212 + TwoPhaseFlow-of2206.
 Also tested with OpenFOAM-v2112 + TwoPhaseFlow-of2112.
