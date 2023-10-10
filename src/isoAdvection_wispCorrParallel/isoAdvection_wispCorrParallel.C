@@ -660,6 +660,7 @@ void Foam::advection::isoAdvection_wispCorrParallel::applyBruteForceBounding()
 
 		// ------- 2. wisp correction in phase 2
 		// serial wisp correction
+	isWisp_ = false;
         forAll(alpha1_, cellI)
             {
                 if (alpha1_[cellI] < (wispTol))
