@@ -55,8 +55,10 @@ maxDeltaT       1;
 
 maxCapillaryNum 5;
 
-libs            ( "libfvOptionArtificialViscousInterfaceForce.so" 
-				  "libisoAdvection_wispCorr.so");
+libs            (   "libVoF.so"
+                    "libfvOptions.so"
+                    "libfvOptionArtificialViscousInterfaceForce.so"
+		    "libisoAdvection_wispCorr.so");
 
 functions
 {
