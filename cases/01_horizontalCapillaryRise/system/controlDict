@@ -55,8 +55,9 @@ maxCapillaryNum 5;
 
 maxDeltaT       1;
 
-libs            ( "libfvOptionArtificialViscousInterfaceForce.so" );
-
+libs            (   "libVoF.so"
+                    "libfvOptions.so"
+                    "libfvOptionArtificialViscousInterfaceForce.so" );
 functions
 {
     alphaVolume

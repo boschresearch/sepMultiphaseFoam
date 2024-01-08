@@ -21,7 +21,7 @@ Note: the wisp correction is currently only implemented for the interFlow solver
 
 For the test cases of the oscillating wave and translating droplet, refer to https://github.com/boschresearch/sepMultiphaseFoam/tree/publications/ST-VoF-benchmark. 
 
-For more details refer to paper [source].
+For more details refer to our [paper](https://arxiv.org/abs/2306.11532).
 
 ## Installation
 Source your OpenFOAM environment with `source ~/OpenFOAM-v2212/etc/bashrc` .
