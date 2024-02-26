@@ -1,7 +1,0 @@
-#!/bin/sh
-cd ${0%/*} || exit 1    # run from this directory
-
-wmakeLnInclude  .
-
-wmake libso artificialInterfaceForce
-wmake libso isoAdvection_wispCorrParallel

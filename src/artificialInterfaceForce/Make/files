@@ -1,4 +1,0 @@
-artificialViscousInterfaceForce.C
-
-LIB = $(FOAM_USER_LIBBIN)/libfvOptionArtificialViscousInterfaceForce
-
