@@ -1,61 +1,45 @@
-# Artificial Viscosity / Wisp Correction for OpenFOAM
+## sepMultiphaseFoam
 
-This branch contains the implementations and test cases discussed in the publication "Stabilizing the unstructured Volume-of-Fluid method for capillary flows in micro-structures using artificial viscosity" [(Preprint on ArXiV)](https://arxiv.org/abs/2306.11532).
+<span style="color:red">**under construction**</span>
 
-Based on OpenFOAM-v2212 + TwoPhaseFlow-of2206.
-Also tested with OpenFOAM-v2112 + TwoPhaseFlow-of2112.
 
-TwoPhaseFlow is found here: https://github.com/DLR-RY/TwoPhaseFlow/tree/of2206
+sepMultiphaseFoam is a gemetrical volume-of-fluid (VoF) OpenFOAM based multiphase solver.
+Currently focusing on the improvement of surface tension on unstructured grids, we strive to improve by and by
 
-## Contents 
-- An fvOption with an artificial viscosity model
-- A modified version of the isoAdvector class from TwoPhaseFlow with wisp correction
-- Three wetting test cases: 
-	- Horizontal capillary rise
-	- Forced channel wetting
-	- 3x3 Microcavity array wetting
+* **surface tension**  (in cooperation with TU Darmstadt, Mathematical Modeling & Analysis, T. Maric)
+* wetting effects
+* phase change
+* species transport
 
-All three test cases contain the artificial viscosity model, configuration can be found in the system/fvOptions files.
-The third test case contains the wisp correction, configuration is seen in the system/fvSolution file.
-Note: the wisp correction is currently only implemented for the interFlow solver.
+In **bold** the current status is marked.
 
-For the test cases of the oscillating wave and translating droplet, refer to https://github.com/boschresearch/sepMultiphaseFoam/tree/publications/ST-VoF-benchmark. 
+The *branches* starting with `publications/` clearly all mark publications.
+These contain next to the preprint also the
+* data
+* setups and
+* evaluation scripts
+and you find explanatory ReadMe files.
 
-For more details refer to paper [source].
+### Getting Started
 
-## Installation
-Source your OpenFOAM environment with `source ~/OpenFOAM-v2212/etc/bashrc` .
 
-To compile the libraries, run `./Allwmake` in the `src` directory.
+### Installation
+To install, you must first install OpenFOAM v2112 from www.openfoam.com.
+Please follow the installation guide there to ensure a working OpenFOAM version.
 
-Depending on where you installed the TwoPhaseFlow library, and which version you are using, you might need to adapt line 10 in file `src/isoAdvection_wispCorrParallel/Make/options` to
-`-I/<path-to-TwoPhaseFlow>/src/VoF/lnInclude`.
+Afterwards you can clone this repository by simply typing
 
-Default is `-I/home/$(USER)/OpenFOAM/TwoPhaseFlow-of2206/src/VoF/lnInclude`.
+`git clone https://github.com/boschresearch/sepMultiphaseFoam`
 
-## Usage
-### Artificial viscosity model
-Include the library in the controlDict:
+Afterwards you can compile it against your general OpenFOAM version.
 
-`libs            ( "libfvOptionArtificialViscousInterfaceForce.so" );`
+### About
+Robert Bosch GmbH 
 
-and specify the parameters in the fvOptions file.
-Please refer to the three test cases for details.
+### Contribute
 
-### Wisp correction
-Include the library in the controlDict:
+### License
+Since these improvements are based on OpenFOAM from www.openfoam.com, we comply with the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) license.
 
-`libs            ( "libisoAdvection_wispCorr.so" );`
-
-Change the advection scheme and set a wisp tolerance in fvSolutions:
-
-`advectionScheme isoAdvection_wispCorrParallel;`
-
-`wispTol         1e-3;`
-
-For an example please refer to test case 03.
-Note: the wisp correction is currently only implemented for the interFlow solver.
-
-## Authors
-Robert Bosch GmbH
+### Bibliography
 

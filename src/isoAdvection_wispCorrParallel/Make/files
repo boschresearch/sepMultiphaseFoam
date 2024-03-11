@@ -1,3 +1,0 @@
-isoAdvection_wispCorrParallel.C
-
-LIB = $(FOAM_USER_LIBBIN)/libisoAdvection_wispCorr
