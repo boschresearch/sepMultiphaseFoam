@@ -1,6 +1,6 @@
 # Automated image analysis for contact angle calculation
 
-This branch contains the jupyter notebook for the automated image analysis procedure for dynamic contact angle calculation proposed in the publication "Experimental study of dynamic wetting behavior through curved mictochannels with automated image analysis" [paper source].  
+This branch contains the jupyter notebook for the automated image analysis procedure for dynamic contact angle calculation proposed in the publication "Experimental study of dynamic wetting behavior through curved mictochannels with automated image analysis" ([Preprint on arXiv](https://arxiv.org/html/2403.09246v1)).  
 
 A subset of images from experimental results is provided here for users to test the algorithm.
 
@@ -11,8 +11,7 @@ A subset of images from experimental results is provided here for users to test 
 	- Water:
 	
    Microchannel | 0.00011ml/s | 0.00025ml/s | 0.00067ml/s | 0.0011ml/s | 0.0018ml/s 
-   --- | --- | --- | --- | --- |---
-   Straight     | 1.5         |  -          | 4           | 3          | -        
+   --- | --- | --- | --- | --- |---   
    Variation 1  | 1.5         | 1.5         | -           | 2.5        | -        
    Variation 2  | 1.5         | 1.5         | -           | 1          | -        
    Variation 3  | 1.2         | 1.5         | -           | -          | 1.5        
