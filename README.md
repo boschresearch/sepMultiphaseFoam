@@ -1,7 +1,7 @@
 
 # Data and Code for Publication "Experimental and Numerical Study of Microcavity Filling Regimes for Lab-on-a-Chip Applications"
 
-This branch contains all postprocessing scripts necessary to reproduce the results in the publication "Experimental and Numerical Study of Microcavity Filling Regimes for Lab-on-a-Chip Applications" by L. Nagel, A. Lippert, R. Leonhardt, T. Tolle, H. Zhang, and T. Maric.
+This branch contains all postprocessing scripts necessary to reproduce the results in the publication "Experimental and Numerical Study of Microcavity Filling Regimes for Lab-on-a-Chip Applications" by L. Nagel, A. Lippert, R. Leonhardt, T. Tolle, H. Zhang, and T. Maric ([Preprint on arXiv](https://doi.org/10.48550/arXiv.2407.18068)).
 
 **Important note: Due to storage limitations, only a minimal sample of the experimental and numerical datasets are stored here to enable quick tests of the image processing scripts. The complete dataset necessary for reproducing all results is publicly available [here at TUdatalib](https://doi.org/10.48328/tudatalib-1497)**.
 
