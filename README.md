@@ -1,6 +1,6 @@
 # Data and Code for Publication "Fluid penetration and wetting characteristics in T-shaped microchannels"
 
-This branch contains the data and the jupyter notebooks to reproduce the results in the publication "Fluid penetration and wetting characteristics in T-shaped microchannels" ([Preprint on arXiv](LINK)).
+This branch contains the data and the jupyter notebooks to reproduce the results in the publication "Fluid penetration and wetting characteristics in T-shaped microchannels" ([Publication on SpringerLink](https://link.springer.com/article/10.1007/s00348-024-03906-w), [Preprint on arXiv](https://arxiv.org/abs/2408.14083)).
 
 ## Contents
 
@@ -13,7 +13,7 @@ This branch contains the data and the jupyter notebooks to reproduce the results
     - directory  *results*: saved data in CSV files, figures for temporal evolution of dynamic contact angle and interface displacement
 
 ### 2. Plots directory: ***Plots***
-- Jupyter notebooks for plots in the publication: `Plots_contact_angle.ipynb` for contact angle plot, `Plots_others.ipynb` for all other plots (flow rate distribution, penetration depth, interface pinning effect).
+- Jupyter notebooks for plots in the publication: `Plots_contact_angle_raw.ipynb` for contact angle plot, `Plots_others.ipynb` for all other plots (flow rate distribution, penetration depth, interface pinning effect).
 - Experimental results (data): all CSV files used in the plots are provided in directory `Data`.
 
 For more details please refer to the publication and the separate scripts.
