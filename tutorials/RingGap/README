@@ -1,0 +1,2 @@
+This tutorial is a work in progress. The scaling between SE and OF calculations leads to a gap between walls and fluid surface.
+The reason is that the inner diameter is increased during scaling.

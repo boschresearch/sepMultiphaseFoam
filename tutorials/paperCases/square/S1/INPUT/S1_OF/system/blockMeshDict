@@ -1,0 +1,66 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2212                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+width	|-A_C-|;
+height	0.05;
+envWidthFactor	5;
+
+// environment
+xmin		#calc "-(($envWidthFactor-1)/2+0.5)*$width*1.001";
+xmax		#calc "(($envWidthFactor-1)/2+1.5)*$width*1.001";
+ymin		#calc "-(($envWidthFactor-1)/2+0.5)*$width*1.001";
+ymax		#calc "(($envWidthFactor-1)/2+1.5)*$width*1.001";
+zmin		#calc "-$height*0.001";
+zmax		#calc "$height*1.001+$envWidthFactor*$width"; //capillary height + environment height = 0.05 + 0.02
+
+nd			20;		// number of cells across diameter/width
+dx			#eval{$width/$nd};
+nx			#calc "static_cast<int>(($xmax-($xmin))/$dx)";
+ny			#calc "static_cast<int>(($ymax-($ymin))/$dx)";
+nz			#calc "static_cast<int>(($zmax-($zmin))/$dx)";
+
+vertices
+(
+    ($xmin $ymin $zmin) //0
+    ($xmax $ymin $zmin) //1
+    ($xmax $ymax $zmin) //2
+    ($xmin $ymax $zmin) //3
+    ($xmin $ymin $zmax) //4
+    ($xmax $ymin $zmax) //5
+    ($xmax $ymax $zmax) //6
+    ($xmin $ymax $zmax) //7
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) ($nx $ny $nz)
+    simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+);
+
+mergePatchPairs
+(
+);
+
+
+// ************************************************************************* //

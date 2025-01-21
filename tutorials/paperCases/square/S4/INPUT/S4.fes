@@ -1,0 +1,112 @@
+// Surface Evolver Script (https://kenbrakke.com/evolver/evolver.html) to predict fluid behavior in elongated rectangle capillary.
+// Capillary cross-section-center is placed at 0,0. z aligns with the long axis.
+// Initialization of capillary width with parameter "width".
+// Initialization of capillary length with parameter "capillary_length"
+// Initialization of initial filling height with parameter "height_init".
+// The contact angle can be changed by altering "angle".
+// Only the free interface is discretized and the contact angles diretly prescribed along the edges/contact line
+// Constraints must be given regarding vertice/edge position to prevent penetration through walls.
+
+
+parameter ca = 20						// interior angle between plane and surface, degrees
+parameter a_c = |-A_C-|					// width of capillary, m
+parameter h_c = 0.05	// overall height of capillary, m
+parameter x_m = |-X_M-|
+#define h_i (h_c-x_m)					// initial filling height in capillary, m, IMPORTANT: definition has to be in brackets, otherwise simulation crashes
+parameter tens = 0.07275				// surface tension, N/m
+parameter RHO = 998.2					// density kg/m^3
+
+gravity_constant 9.81
+
+#define WALLT (-tens*cos(ca*pi/180)) // liquid-solid contact energy
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+// CONSTRAINTS
+
+constraint 1   // restricts vertices/edges to yz-plane @ x=0 
+formula: x = 0                             
+energy: 
+e1: 0
+e2: -(WALLT*z) 
+e3: 0
+
+constraint 2   // restricts vertices/edges to xz-plane @ y=0
+formula: y = 0                      
+energy:
+e1: (WALLT*z)
+e2: 0
+e3: 0
+
+constraint 3   // restricts vertices/edges to yz-plane @ x=a
+formula: x = a_c
+energy: 
+e1: 0
+e2: (WALLT*z) 
+e3: 0
+
+constraint 4   // restricts vertices/edges to xz-plane @ y=b
+formula: y = a_c
+energy:
+e1: -(WALLT*z)
+e2: 0
+e3: 0
+
+constraint 5 nonnegative
+formula: z
+
+constraint 6 nonnegative
+formula: h_c-z
+
+constraint 7 nonnegative
+formula: x
+
+constraint 8 nonnegative
+formula: a_c-x
+
+constraint 9 nonnegative
+formula: y
+
+constraint 10 nonnegative
+formula: a_c-y
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+//DEFINE TRIANGULATION
+
+vertices
+1     0      0     	0   fixed   // vertices to describe capillary
+2     a_c    0      0   fixed
+3     a_c    a_c    0   fixed
+4     0      a_c    0   fixed
+5     0      0      h_c                fixed
+6     a_c    0      h_c                fixed
+7     a_c    a_c    h_c                fixed
+8     0      a_c    h_c                fixed
+9     0      0      h_i   constraint 1,2,5,6   // vertices of interface
+10    a_c    0      h_i   constraint 2,3,5,6
+11    a_c    a_c    h_i   constraint 3,4,5,6
+12    0      a_c    h_i   constraint 1,4,5,6
+
+edges
+1     1   2   no_refine bare fixed   // for capillary
+2     2   3   no_refine bare fixed
+3     3   4   no_refine bare fixed
+4     4   1   no_refine bare fixed
+5     5   6   no_refine bare fixed
+6     6   7   no_refine bare fixed
+7     7   8   no_refine bare fixed
+8     8   5   no_refine bare fixed
+9     1   5   no_refine bare fixed
+10    2   6   no_refine bare fixed
+11    3   7   no_refine bare fixed
+12    4   8   no_refine bare fixed
+13    9   10  constraint 2,5,6,7,8  // the edges affected by energy integral must be defined in the direction where missing face has outward normal
+14    10  11  constraint 3,5,6,9,10
+15    11  12  constraint 4,5,6,7,8
+16    12  9   constraint 1,5,6,9,10
+
+faces
+1     13   14   15   16   color 4   tension tens	constraint 5,6,7,8,9,10
+
+bodies
+1     1   volume a_c^2*h_i density RHO
+
