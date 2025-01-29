@@ -398,10 +398,10 @@ def print_dbg_msg(msg):
 def print_prog_header():
     header = '''
 *******************************************************
-***** Fast evaporation simulation in gaps (FESiG) *****
+***** Fast evaporation simulation in gaps (FESIG) *****
 *******************************************************
 ** Author: Phil Namesnik
-** Copyright: Copyright 2024, FESiG
+** Copyright: Copyright 2024, FESIG
 ** Version: 1.0.0
 ** Maintainer: Phil Namesnik
 ** Email: phil.namesnik@de.bosch.com

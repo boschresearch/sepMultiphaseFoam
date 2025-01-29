@@ -1,14 +1,4 @@
-<!---
-
-	Copyright (c) 2009, 2018 Robert Bosch GmbH and its subsidiaries.
-	This program and the accompanying materials are made available under
-	the terms of the Bosch Internal Open Source License v4
-	which accompanies this distribution, and is available at
-	http://bios.intranet.bosch.com/bioslv4.txt
-
--->
-
-# Novel Simulation Approach for Evaporation Processes  <!-- omit in toc -->
+# Fast Evaporation Simulation in Gaps (FESIG)  <!-- omit in toc -->
 
 This branch contains the implementations and test cases studied in the paper "A Novel Simulation Approach for Evaporation Processes in Small Gaps of Industrial Applications" (Publication on [Elsevier](), Preprint on [ArXiV]()).
 
@@ -25,6 +15,7 @@ This branch contains the implementations and test cases studied in the paper "A 
 - [About](#about)
   - [Maintainers](#maintainers)
   - [Contributors](#contributors)
+- [License](#license)
 
 ## Getting Started <a name="getting-started"></a>
 
@@ -38,7 +29,8 @@ This branch contains the implementations and test cases studied in the paper "A 
 	- Download the Surface Evolver version 2.70 from [here](https://kenbrakke.com/evolver/downloads/evolver-2.70.tar.gz)
 	- Transfer the downloaded archive to your home directory
 	- Extract the archive in the home folder using <code>tar -xzf evolver-2.70.tar.gz .</code>
-	- Now, a new directory named <code>evolver-2.70</code> should be located in your home directory	
+	- Now, a new directory named <code>evolver-2.70</code> should be located in your home directory
+	- Follow the installation guide according to the [SE website](https://kenbrakke.com/evolver/html/install.htm#unix-version) to complete the installation. Especially, take care of the respective changes in the Surface Evolver Makefile to avoid errors during program execution.
 2. Install OpenFOAM v2212 from the ESI [website](https://www.openfoam.com/news/main-news/openfoam-v2212)
 3. Install Surface Evolver convergence algorithm and customized OpenFOAM solver 
 	- Open a new Linux terminal: <code>Ctrl+Alt+T</code>
@@ -108,3 +100,9 @@ Anja Lippert<br>
 Tobias Tolle<br>
 Christian Kuntz<br>
 Alexander Eifert
+
+## License <a name="license"></a>
+
+FESIG is open-sourced under the AGPL-3.0 license. See the [LICENSE](LICENSE) file for details.
+
+For a list of other open source components included in FESIG, see the file [3rd-party-licenses.txt](3rd-party-licenses.txt).

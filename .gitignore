@@ -39,6 +39,9 @@ constant/polyMesh/boundary*
 constant/polyMesh/sets
 constant/polyMesh/*
 
+# calculated values in dictionaries
+*dynamicCode*
+
 # Zones and levels
 *Level*
 *Zone*
