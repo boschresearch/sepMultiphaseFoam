@@ -3,7 +3,7 @@
 This branch contains the implementations and test cases studied in the paper "A Novel Simulation Approach for Evaporation Processes in Small Gaps of Industrial Applications" (Publication on [Elsevier](), Preprint on [ArXiV](https://arxiv.org/pdf/2501.09337)).
 
 <span style="color:red">**under construction**</span>
-The code is currently under revision and is uploaded asap.
+Code will be published soon.
 
 ## Table of Contents  <!-- omit in toc -->
 
