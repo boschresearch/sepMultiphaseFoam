@@ -1,0 +1,13 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+source ~/.bashrc									# load bashrc to get scaleSTL command
+#------------------------------------------------------------------------------
+./Allclean		# clean case
+
+restore0Dir		# create 0 directory
+
+runApplication blockMesh	# create block mesh based on system/blockMeshDict
+
+surfaceMeshExtract constant.stl	# create STL surface from volume mesh
+#------------------------------------------------------------------------------

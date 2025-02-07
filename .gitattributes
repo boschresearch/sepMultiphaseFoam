@@ -1,0 +1,44 @@
+# ---------------------------------------------------------------------------------------------------------
+# common template for handling EOL of files by Git in any OS which can be used in the individual repository
+# ---------------------------------------------------------------------------------------------------------
+
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+# Git will handle the files in whatever way it thinks is best. This is a good default option.
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.c text
+*.h text
+
+# Declare files that will always have CRLF line endings on checkout.
+# * text eol=crlf
+*.sln text eol=crlf
+*.bat text eol=crlf
+*.ps text eol=crlf
+# Git will always convert line endings to `CRLF` on checkout. You should use this for files that must keep `CRLF` endings, even on OSX or Linux.
+
+# Declare files that will always have LF line endings on checkout.
+# * text eol=lf
+*.sh text eol=lf
+*.nsh text eol=lf
+# Git will always convert line endings to `LF` on checkout. You should use this for files that must keep LF endings, even on Windows.
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
+*.exe binary
+*.dat binary
+# Git will understand that the files specified are not text, and it should not try to change them. The `binary` setting is also an alias for `-text -diff`.
+
+# Documents 
+*.doc     diff=astextplain
+*.DOC     diff=astextplain
+*.docx 	  diff=astextplain
+*.DOCX 	  diff=astextplain
+*.dot  	  diff=astextplain
+*.DOT  	  diff=astextplain
+*.pdf  	  diff=astextplain
+*.PDF     diff=astextplain
+*.rtf     diff=astextplain
+*.RTF     diff=astextplain

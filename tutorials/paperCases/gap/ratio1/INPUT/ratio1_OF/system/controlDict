@@ -1,0 +1,95 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2212                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+Niter			10;
+
+application     steadyMolecularDiffusionFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         $Niter;
+
+deltaT          1;
+
+writeControl    timeStep;
+
+writeInterval   $Niter;
+
+purgeWrite      0;
+
+writeFormat     binary;
+
+writePrecision  12;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+maxDeltaT       1;
+
+maxCo           0.5;
+
+maxAlphaCo      0.5;
+
+maxAlphaDdt     1;
+
+functions
+{
+	readFlux
+    {
+        type        readFields;
+        libs        (fieldFunctionObjects);
+        fields      (flux);
+    }
+    
+	diffFluxRate
+	{
+		// Mandatory entries (unmodifiable)
+		type            surfaceFieldValue;
+		libs            (fieldFunctionObjects);
+
+		// Mandatory entries (runtime modifiable)
+		fields          (flux);
+		operation       areaIntegrate;
+		regionType      patch;
+		names           (enclosure_env enclosure_envBottom);
+
+		// Optional (inherited) entries
+		writeFields     false;
+		writePrecision  12;
+		writeToFile     true;
+	}
+
+    solverInfo
+	{
+		type            solverInfo;
+		libs            ("libutilityFunctionObjects.so");
+		fields          (".*");
+		writeResidualFields no;
+	}
+}
+
+// ************************************************************************* //

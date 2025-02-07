@@ -1,0 +1,181 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2212                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+diameter	|-D_C-|;
+envWidthFactor	5;
+h_c			|-H_C-|;	// capillary height
+radius		#calc "$diameter/2";
+
+// environment
+xenvmin		#calc "-$envWidthFactor/2*$diameter";
+xenvmax		#calc "$envWidthFactor/2*$diameter";
+yenvmin		#calc "-$envWidthFactor/2*$diameter";
+yenvmax		#calc "$envWidthFactor/2*$diameter";
+zenvmin		$h_c; //capillary height
+zenvmax		#calc "$h_c+$envWidthFactor*$diameter"; //capillary height + environment height = 0.05 + 0.02
+
+//capillary
+xcapmin		-$radius;
+xcapmax		$radius;
+ycapmin		-$radius;
+ycapmax		$radius;
+zcapmin		0;//#eval{$h_c-0.025}; //capillary height - minimal meniscus height - puffer = 0.03 - 0.02 - 0.005
+zcapmax		$h_c; //capillary height
+
+nd			20;		// number of cells across diameter/width
+dx			#eval{$diameter/$nd};
+nenvx			#calc "static_cast<int>(($xenvmax-($xenvmin))/$dx/2)";
+nenvy			#calc "static_cast<int>(($yenvmax-($yenvmin))/$dx/2)";
+nenvz			#calc "static_cast<int>(($zenvmax-($zenvmin))/$dx/2)";
+ncapx			#calc "static_cast<int>(($xcapmax-($xcapmin))/$dx/2)";
+ncapy			#calc "static_cast<int>(($ycapmax-($ycapmin))/$dx/2)";
+ncapz			#calc "static_cast<int>(($zcapmax-($zcapmin))/$dx/2)";
+
+vertices
+(
+    ($xenvmin $yenvmin $zenvmin) //0
+    ($xenvmax $yenvmin $zenvmin) //1
+    ($xenvmax $yenvmax $zenvmin) //2
+    ($xenvmin $yenvmax $zenvmin) //3
+    ($xenvmin $yenvmin $zenvmax) //4
+    ($xenvmax $yenvmin $zenvmax) //5
+    ($xenvmax $yenvmax $zenvmax) //6
+    ($xenvmin $yenvmax $zenvmax) //7
+    
+    
+    ($radius 0 $zcapmin)//0.8122499999999999) //8
+    (0 $radius $zcapmin)//0.8122499999999999) //9
+    (-$radius 0 $zcapmin)//0.8122499999999999) //10
+    (0 -$radius $zcapmin)//0.8122499999999999) //11
+    
+    ($radius 0 $zcapmax) //12
+    (0 $radius $zcapmax) //13
+    (-$radius 0 $zcapmax) //14
+    (0 -$radius $zcapmax) //15
+    
+    (0 0 $zcapmin)//0.8122499999999999) //16
+    (0 0 $zcapmax) //17
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) ($nenvx $nenvy $nenvz)
+    simpleGrading (1 1 1)
+	
+	// quarter 1
+	hex (8 9 16 16 12 13 17 17) ($ncapx $ncapy $ncapz)//181)
+    simpleGrading (1 1 1)
+    
+    // quarter 2
+    hex (9 10 16 16 13 14 17 17) ($ncapx $ncapy $ncapz)//181)
+    simpleGrading (1 1 1)
+    
+    // quarter 3
+    hex (10 11 16 16 14 15 17 17) ($ncapx $ncapy $ncapz)//181)
+    simpleGrading (1 1 1)
+    
+    // quarter 4
+    hex (11 8 16 16 15 12 17 17) ($ncapx $ncapy $ncapz)//181)
+    simpleGrading (1 1 1)
+);
+
+edges
+(
+	// quarter 1
+	arc 8 9 (#eval{$radius*cos(degToRad(45))} #eval{$radius*sin(degToRad(45))} $zcapmin)
+	arc 12 13 (#eval{$radius*cos(degToRad(45))} #eval{$radius*sin(degToRad(45))} $zcapmax)
+	
+	// quarter 2
+	arc 9 10 (#eval{$radius*cos(degToRad(135))} #eval{$radius*sin(degToRad(135))} $zcapmin)
+	arc 13 14 (#eval{$radius*cos(degToRad(135))} #eval{$radius*sin(degToRad(135))} $zcapmax)
+	
+	// quarter 3
+	arc 10 11 (#eval{$radius*cos(degToRad(225))} #eval{$radius*sin(degToRad(225))} $zcapmin)
+	arc 14 15 (#eval{$radius*cos(degToRad(225))} #eval{$radius*sin(degToRad(225))} $zcapmax)
+	
+	// quarter 4
+	arc 11 8 (#eval{$radius*cos(degToRad(315))} #eval{$radius*sin(degToRad(315))} $zcapmin)
+	arc 15 12 (#eval{$radius*cos(degToRad(315))} #eval{$radius*sin(degToRad(315))} $zcapmax)
+);
+
+boundary
+(
+    env
+    {
+        type patch;
+        faces
+        (
+            (1 2 6 5)
+            (4 5 6 7)
+            (0 4 7 3)
+            (0 1 5 4)
+            (3 7 6 2)
+        );
+    }
+    
+    envBottom
+    {
+        type patch;
+        faces
+        (
+            (0 3 2 1)
+        );
+    }
+    
+    capBottom
+    {
+        type wall;
+        faces
+        (
+            (8 16 16 9)
+            (9 16 16 10)
+            (10 16 16 11)
+            (11 16 16 8)
+        );
+    }
+    
+    capSides
+    {
+        type wall;
+        faces
+        (
+            (8 9 13 12)
+            (9 10 13 14)
+            (10 11 15 14)
+            (11 8 12 15)
+        );
+    }
+    
+    capTop
+    {
+        type wall;
+        faces
+        (
+            (13 17 17 12)
+            (14 17 17 13)
+            (15 17 17 14)
+            (12 17 17 15)
+        );
+    }
+);
+
+mergePatchPairs
+(
+	(capTop envBottom)
+);
+
+
+// ************************************************************************* //
